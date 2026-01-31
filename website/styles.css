@@ -97,9 +97,15 @@ body {
     border: 1.5px solid var(--accent);
 }
 
+/* Ensure strong contrast on hover and in header specifically */
 .btn-secondary:hover {
     background: var(--accent);
-    color: var(--bg-primary);
+    color: #ffffff; /* use white for clear contrast on red */
+}
+
+.navbar .nav-links .btn-secondary:hover {
+    background: var(--accent);
+    color: #ffffff;
 }
 
 /* Hero */
@@ -165,16 +171,9 @@ body {
 }
 
 .feature-icon {
-<<<<<<< HEAD
-<<<<<<< HEAD
     font-size: 2.5rem;
     margin-bottom: 1rem;
-=======
     display: none;
->>>>>>> 39c90b2 (Tech Debt Collector)
-=======
-    display: none;
->>>>>>> 5889e34 (Tech Debt Collector)
 }
 
 .feature-card h3 {
@@ -265,33 +264,17 @@ pre code {
 .footer a {
     color: var(--accent);
     text-decoration: none;
-<<<<<<< HEAD
-<<<<<<< HEAD
-}
-
-.footer a:hover {
-    text-decoration: underline;
-=======
     margin: 0 0.5rem;
 }
 
 .footer a:hover {
-=======
-    margin: 0 0.5rem;
-}
-
-.footer a:hover {
->>>>>>> 5889e34 (Tech Debt Collector)
     color: var(--accent-hover);
+    text-decoration: underline;
 }
 
 .social-icons {
     margin: 1rem 0;
     font-size: 1.2rem;
-<<<<<<< HEAD
->>>>>>> 39c90b2 (Tech Debt Collector)
-=======
->>>>>>> 5889e34 (Tech Debt Collector)
 }
 
 /* Responsive */

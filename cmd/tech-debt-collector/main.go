@@ -277,6 +277,6 @@ EXAMPLES:
 ENVIRONMENT:
   OPENAI_API_KEY            Your OpenAI API key (optional)
 
-For more information, visit: https://github.com/vishaldhiman28/tech-debt-collector
+For more information, visit: https://github.com/vishaldhiman28/the-tech-debt-collector
 `)
 }
