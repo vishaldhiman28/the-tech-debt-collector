@@ -1,5 +1,6 @@
 # Tech Debt Collector
 
+<<<<<<< HEAD
 A production-grade Go CLI tool that scans codebases for technical debt, scores risk, and uses OpenAI's LLM to prioritize remediation.
 
 ## Features
@@ -120,10 +121,61 @@ tech-debt-collector \
 
 Create a `.env` file:
 
+=======
+🔍 AI-powered CLI tool to find, score, and prioritize technical debt in your codebase.
+
+## Quick Start
+
+### Install
+```bash
+go build -o bin/tech-debt-collector ./cmd/tech-debt-collector
+```
+
+### Run
+```bash
+# Basic scan
+./tech-debt-collector -path .
+
+# With LLM analysis
+export OPENAI_API_KEY="sk-..."
+./tech-debt-collector -path . -llm
+```
+
+## Features
+
+- **Intelligent Scanning** - Finds TODO, FIXME, HACK, DEPRECATED, XXX comments
+- **Risk Scoring** - Weighted algorithm for accurate prioritization
+- **AI Analysis** - OpenAI GPT-4/3.5 for explanations and recommendations
+- **Web Dashboard** - Review results and provide feedback
+- **Learning Loop** - Improves over time based on user input
+- **Multi-Language** - Go, Python, JavaScript, TypeScript, Java, C/C++, Rust, Ruby, PHP, Shell
+- **Docker Ready** - Full stack with Qdrant, Prometheus, Grafana
+
+## Usage
+
+```bash
+# Output to JSON
+./tech-debt-collector -path . -output report.json
+
+# Output as text
+./tech-debt-collector -path . -format text
+
+# Enable verbose logging
+./tech-debt-collector -path . -verbose
+
+# Use GPT-4
+./tech-debt-collector -path . -llm -openai-model gpt-4
+```
+
+## Environment
+
+Create `.env`:
+>>>>>>> 5ca5d86 (Tech Debt Collector)
 ```bash
 OPENAI_API_KEY=sk-your-key-here
 ```
 
+<<<<<<< HEAD
 ### Output Examples
 
 #### JSON Output
@@ -340,11 +392,51 @@ case "html":
 4. **Risk Modeling**: Weighted algorithm balancing multiple factors
 5. **DevOps**: CLI tool integrates with CI/CD pipelines
 6. **Testing**: Extensible with clear test seams
+=======
+## Docker
+
+```bash
+docker-compose up -d
+
+# Access services
+# Dashboard: http://localhost:8080
+# Prometheus: http://localhost:9090
+# Grafana: http://localhost:3000 (admin/admin)
+```
+
+## How It Works
+
+1. **Scan** - Find source files recursively
+2. **Detect** - Identify TODO/FIXME/HACK patterns  
+3. **Score** - Calculate risk (0-100 scale)
+4. **Analyze** - AI provides insights and recommendations
+5. **Report** - Generate JSON or text report
+
+## Output Example
+
+```json
+{
+  "total_items": 42,
+  "critical": 3,
+  "high": 8,
+  "medium": 15,
+  "low": 16
+}
+```
+
+## Requirements
+
+- Go 1.21+
+- OpenAI API key (optional, for LLM features)
+>>>>>>> 5ca5d86 (Tech Debt Collector)
 
 ## License
 
 MIT
+<<<<<<< HEAD
 
 ## Contact
 
 For issues or questions, open an issue on GitHub.
+=======
+>>>>>>> 5ca5d86 (Tech Debt Collector)
