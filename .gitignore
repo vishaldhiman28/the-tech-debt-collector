@@ -1,0 +1,22 @@
+.env
+bin/
+*.swp
+*.swo
+.DS_Store
+
+# Documentation for internal use only
+ARCHITECTURE.md
+PROJECT_SUMMARY.md
+
+# Test reports (may contain sensitive data)
+test_report.json
+test_report.txt
+
+# Local development files
+.vscode/
+.idea/
+*.log
+
+# OS generated files
+Thumbs.db
+*.tmp

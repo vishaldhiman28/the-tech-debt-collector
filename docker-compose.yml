@@ -1,0 +1,94 @@
+version: '3.8'
+
+services:
+  # Qdrant vector database
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: tech-debt-qdrant
+    ports:
+      - "6333:6333"
+      - "6334:6334"
+    volumes:
+      - qdrant_data:/qdrant/storage
+    environment:
+      - QDRANT_API_KEY=tech-debt-secret
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:6333/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Prometheus metrics
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: tech-debt-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./observability/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9090/-/healthy"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Grafana dashboards
+  grafana:
+    image: grafana/grafana:latest
+    container_name: tech-debt-grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_SECURITY_ADMIN_USER=admin
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./observability/grafana-datasource.yml:/etc/grafana/provisioning/datasources/datasource.yml
+    depends_on:
+      prometheus:
+        condition: service_healthy
+
+  # Web dashboard
+  dashboard:
+    build:
+      context: .
+      dockerfile: web/Dockerfile
+    container_name: tech-debt-dashboard
+    ports:
+      - "8080:8080"
+    environment:
+      - QDRANT_URL=http://qdrant:6333
+      - PROMETHEUS_URL=http://prometheus:9090
+    depends_on:
+      - qdrant
+      - prometheus
+    volumes:
+      - ./web:/app/web
+
+  # Tech debt collector app
+  collector:
+    build: .
+    container_name: tech-debt-collector
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - QDRANT_URL=http://qdrant:6333
+      - PROMETHEUS_PUSHGATEWAY=http://prometheus:9091
+    depends_on:
+      qdrant:
+        condition: service_healthy
+      prometheus:
+        condition: service_healthy
+    volumes:
+      - .:/workspace
+
+volumes:
+  qdrant_data:
+  prometheus_data:
+  grafana_data:
+
+networks:
+  default:
+    name: tech-debt-network

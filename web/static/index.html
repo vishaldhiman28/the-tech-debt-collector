@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Tech Debt Feedback Dashboard</title>
+	<style>
+		* { margin: 0; padding: 0; box-sizing: border-box; }
+		body {
+			font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+			background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+			min-height: 100vh;
+			padding: 20px;
+		}
+		.container {
+			max-width: 1200px;
+			margin: 0 auto;
+			background: white;
+			border-radius: 10px;
+			box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+			overflow: hidden;
+		}
+		.header {
+			background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+			color: white;
+			padding: 30px;
+			text-align: center;
+		}
+		.header h1 {
+			font-size: 2.5em;
+			margin-bottom: 10px;
+		}
+		.content {
+			padding: 30px;
+		}
+		.metrics-grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+			gap: 20px;
+			margin-bottom: 40px;
+		}
+		.metric-card {
+			background: #f8f9fa;
+			border-left: 4px solid #667eea;
+			padding: 20px;
+			border-radius: 5px;
+			text-align: center;
+		}
+		.metric-card h3 {
+			color: #666;
+			font-size: 0.9em;
+			text-transform: uppercase;
+			margin-bottom: 10px;
+		}
+		.metric-value {
+			font-size: 2em;
+			color: #667eea;
+			font-weight: bold;
+		}
+		.feedback-form {
+			background: #f8f9fa;
+			padding: 20px;
+			border-radius: 5px;
+			margin-bottom: 30px;
+		}
+		.form-group {
+			margin-bottom: 15px;
+		}
+		.form-group label {
+			display: block;
+			margin-bottom: 5px;
+			font-weight: 500;
+			color: #333;
+		}
+		.form-group input,
+		.form-group textarea,
+		.form-group select {
+			width: 100%;
+			padding: 10px;
+			border: 1px solid #ddd;
+			border-radius: 5px;
+			font-family: inherit;
+		}
+		.form-group textarea {
+			min-height: 100px;
+			resize: vertical;
+		}
+		button {
+			background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+			color: white;
+			border: none;
+			padding: 12px 30px;
+			border-radius: 5px;
+			cursor: pointer;
+			font-weight: 500;
+			transition: transform 0.2s;
+		}
+		button:hover {
+			transform: translateY(-2px);
+		}
+		.feedback-list {
+			margin-top: 30px;
+		}
+		.feedback-item {
+			background: #f8f9fa;
+			padding: 15px;
+			margin-bottom: 15px;
+			border-radius: 5px;
+			border-left: 4px solid #dc3545;
+		}
+		.feedback-item.good {
+			border-left-color: #28a745;
+		}
+		.feedback-item h4 {
+			margin-bottom: 10px;
+			color: #333;
+		}
+		.stars {
+			color: #ffc107;
+			font-size: 1.2em;
+		}
+		.loading {
+			text-align: center;
+			padding: 40px;
+			color: #666;
+		}
+		.error {
+			background: #f8d7da;
+			color: #721c24;
+			padding: 15px;
+			border-radius: 5px;
+			margin-bottom: 20px;
+		}
+		.success {
+			background: #d4edda;
+			color: #155724;
+			padding: 15px;
+			border-radius: 5px;
+			margin-bottom: 20px;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<div class="header">
+			<h1>📊 Tech Debt Feedback</h1>
+			<p>Evaluate AI analysis and improve accuracy</p>
+		</div>
+
+		<div class="content">
+			<!-- Metrics -->
+			<div class="metrics-grid" id="metrics"></div>
+
+			<!-- Feedback Form -->
+			<div class="feedback-form">
+				<h2>Rate an Analysis</h2>
+				<form id="feedbackForm">
+					<div class="form-group">
+						<label>File Path</label>
+						<input type="text" name="filePath" placeholder="src/handlers/auth.go" required>
+					</div>
+
+					<div class="form-group">
+						<label>Line Number</label>
+						<input type="number" name="lineNumber" min="1" required>
+					</div>
+
+					<div class="form-group">
+						<label>Explanation Clarity (1-5)</label>
+						<input type="number" name="explanationRating" min="1" max="5" required>
+					</div>
+
+					<div class="form-group">
+						<label>Severity Accuracy (1-5)</label>
+						<input type="number" name="severityAccuracy" min="1" max="5" required>
+					</div>
+
+					<div class="form-group">
+						<label>Priority Accuracy (1-5)</label>
+						<input type="number" name="priorityAccuracy" min="1" max="5" required>
+					</div>
+
+					<div class="form-group">
+						<label>What should the priority be?</label>
+						<select name="actualPriority">
+							<option>HIGH</option>
+							<option>MEDIUM</option>
+							<option>LOW</option>
+						</select>
+					</div>
+
+					<div class="form-group">
+						<label>Did you fix this issue?</label>
+						<select name="isFixed">
+							<option value="false">No</option>
+							<option value="true">Yes</option>
+						</select>
+					</div>
+
+					<div class="form-group">
+						<label>Time to Fix</label>
+						<input type="text" name="timeToFix" placeholder="e.g., '2 days', '1 week'">
+					</div>
+
+					<div class="form-group">
+						<label>Additional Comments</label>
+						<textarea name="userComment" placeholder="Any feedback on the analysis..."></textarea>
+					</div>
+
+					<button type="submit">Submit Feedback</button>
+				</form>
+				<div id="message"></div>
+			</div>
+
+			<!-- Feedback List -->
+			<div class="feedback-list">
+				<h2>Recent Feedback</h2>
+				<div id="feedbackList" class="loading">Loading feedbacks...</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		const API_BASE = '/api';
+
+		// Load metrics
+		async function loadMetrics() {
+			try {
+				const res = await fetch(`${API_BASE}/trends`);
+				const trends = await res.json();
+
+				const metrics = document.getElementById('metrics');
+				metrics.innerHTML = `
+					<div class="metric-card">
+						<h3>Avg Explanation Rating</h3>
+						<div class="metric-value">${(trends.AvgExplanation || 0).toFixed(1)}/5</div>
+					</div>
+					<div class="metric-card">
+						<h3>Severity Accuracy</h3>
+						<div class="metric-value">${(trends.AvgSeverity || 0).toFixed(1)}/5</div>
+					</div>
+					<div class="metric-card">
+						<h3>Priority Accuracy</h3>
+						<div class="metric-value">${(trends.AvgPriority || 0).toFixed(1)}/5</div>
+					</div>
+					<div class="metric-card">
+						<h3>Fixed Rate</h3>
+						<div class="metric-value">${((trends.FixedRate || 0) * 100).toFixed(0)}%</div>
+					</div>
+				`;
+			} catch (err) {
+				console.error('Failed to load metrics:', err);
+			}
+		}
+
+		// Load feedbacks
+		async function loadFeedbacks() {
+			try {
+				const res = await fetch(`${API_BASE}/feedback`);
+				const feedbacks = await res.json() || [];
+
+				const list = document.getElementById('feedbackList');
+				if (feedbacks.length === 0) {
+					list.innerHTML = '<p style="color: #666;">No feedback yet</p>';
+					return;
+				}
+
+				list.innerHTML = feedbacks.map(fb => `
+					<div class="feedback-item ${getClass(fb)}">
+						<h4>${fb.file_path}:${fb.line_number}</h4>
+						<div class="stars">${'⭐'.repeat(fb.explanation_rating)}</div>
+						<p><strong>Severity:</strong> ${fb.severity_accuracy}/5 | <strong>Priority:</strong> ${fb.priority_accuracy}/5</p>
+						<p>${fb.user_comment || 'No comment'}</p>
+					</div>
+				`).join('');
+			} catch (err) {
+				console.error('Failed to load feedbacks:', err);
+			}
+		}
+
+		function getClass(fb) {
+			const avg = (fb.explanation_rating + fb.severity_accuracy + fb.priority_accuracy) / 3;
+			return avg >= 4 ? 'good' : '';
+		}
+
+		// Submit feedback
+		document.getElementById('feedbackForm').addEventListener('submit', async (e) => {
+			e.preventDefault();
+
+			const formData = new FormData(e.target);
+			const feedback = {
+				id: 'fb_' + Date.now(),
+				file_path: formData.get('filePath'),
+				line_number: parseInt(formData.get('lineNumber')),
+				explanation_rating: parseInt(formData.get('explanationRating')),
+				severity_accuracy: parseInt(formData.get('severityAccuracy')),
+				priority_accuracy: parseInt(formData.get('priorityAccuracy')),
+				actual_priority: formData.get('actualPriority'),
+				is_fixed: formData.get('isFixed') === 'true',
+				time_to_fix: formData.get('timeToFix'),
+				user_comment: formData.get('userComment'),
+			};
+
+			try {
+				const res = await fetch(`${API_BASE}/feedback`, {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify(feedback),
+				});
+
+				if (res.ok) {
+					showMessage('✓ Feedback submitted successfully!', 'success');
+					e.target.reset();
+					loadFeedbacks();
+					loadMetrics();
+				} else {
+					showMessage('Failed to submit feedback', 'error');
+				}
+			} catch (err) {
+				showMessage('Error: ' + err.message, 'error');
+			}
+		});
+
+		function showMessage(msg, type) {
+			const msgDiv = document.getElementById('message');
+			msgDiv.className = type;
+			msgDiv.textContent = msg;
+			setTimeout(() => msgDiv.textContent = '', 5000);
+		}
+
+		// Initial load
+		loadMetrics();
+		loadFeedbacks();
+		setInterval(loadMetrics, 10000);
+		setInterval(loadFeedbacks, 10000);
+	</script>
+</body>
+</html>

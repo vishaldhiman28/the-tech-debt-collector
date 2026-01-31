@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Tech Debt Collector - AI-powered technical debt detection and prioritization tool">
+    <meta name="keywords" content="technical debt, code quality, CI/CD, static analysis, AI">
+    <title>Tech Debt Collector - Automated Technical Debt Detection</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">
+                <span class="logo-icon">📊</span>
+                <span class="logo-text">Tech Debt Collector</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#how-it-works">How It Works</a></li>
+                <li><a href="#getting-started">Get Started</a></li>
+                <li><a href="https://github.com/yaegar/tech-debt-collector" target="_blank" class="cta-button">GitHub</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Find and Fix Technical Debt Automatically</h1>
+                <p class="hero-subtitle">AI-powered scanning identifies code quality issues, prioritizes fixes, and learns from your feedback</p>
+                <div class="hero-buttons">
+                    <a href="https://github.com/yaegar/tech-debt-collector" class="btn btn-primary">View on GitHub</a>
+                    <a href="#getting-started" class="btn btn-secondary">Quick Start</a>
+                </div>
+                <div class="hero-image">
+                    <div class="code-preview">
+                        <div class="code-header">Report Example</div>
+                        <pre><code class="language-json">{
+  "total_items": 47,
+  "critical": 4,
+  "high": 6,
+  "medium": 7,
+  "low": 3,
+  "accuracy": "92%"
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <h2>Powerful Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🔍</div>
+                    <h3>Smart Scanning</h3>
+                    <p>Recursively scans codebases for TODO, FIXME, HACK, DEPRECATED, and XXX comments with context extraction</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚙️</div>
+                    <h3>Risk Scoring</h3>
+                    <p>Weighted algorithm combines severity (50%), file criticality (35%), and frequency (15%) for accurate scoring</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🤖</div>
+                    <h3>LLM Enrichment</h3>
+                    <p>OpenAI GPT-4/3.5 provides intelligent analysis, prioritization suggestions, and fix recommendations</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📚</div>
+                    <h3>RAG Context</h3>
+                    <p>Retrieval Augmented Generation shows LLM similar patterns in your codebase for better recommendations</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Learning Loop</h3>
+                    <p>Collects user feedback, analyzes accuracy trends, and continuously improves recommendations</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📈</div>
+                    <h3>Web Dashboard</h3>
+                    <p>Interactive dashboard for reviewing analysis results, providing feedback, and tracking trends</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🐳</div>
+                    <h3>Docker Ready</h3>
+                    <p>Full Docker Compose stack with Qdrant, Prometheus, Grafana for production deployment</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🌍</div>
+                    <h3>Multi-Language</h3>
+                    <p>Supports Go, Python, JavaScript, TypeScript, Java, C/C++, Rust, Ruby, PHP, and Shell</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section id="how-it-works" class="how-it-works">
+        <div class="container">
+            <h2>How It Works</h2>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>Scan</h3>
+                    <p>Recursively traverse repository, find source files, filter by extension</p>
+                </div>
+                <div class="step-connector">→</div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>Detect</h3>
+                    <p>Identify TODO/FIXME/HACK patterns with context and severity estimation</p>
+                </div>
+                <div class="step-connector">→</div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>Score</h3>
+                    <p>Calculate risk scores using weighted algorithm and file importance</p>
+                </div>
+            </div>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <h3>Analyze</h3>
+                    <p>LLM provides detailed analysis, priority, and fix suggestions with RAG context</p>
+                </div>
+                <div class="step-connector">→</div>
+                <div class="step">
+                    <div class="step-number">5</div>
+                    <h3>Review</h3>
+                    <p>User rates accuracy through web dashboard, provides feedback</p>
+                </div>
+                <div class="step-connector">→</div>
+                <div class="step">
+                    <div class="step-number">6</div>
+                    <h3>Improve</h3>
+                    <p>System learns from feedback, adjusts weights, improves future analyses</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Architecture Section -->
+    <section class="architecture">
+        <div class="container">
+            <h2>Architecture</h2>
+            <div class="architecture-grid">
+                <div class="arch-component">
+                    <h3>CLI Tool</h3>
+                    <p>Go binary for scanning and analysis</p>
+                    <ul>
+                        <li>Fast execution</li>
+                        <li>CI/CD ready</li>
+                        <li>No dependencies</li>
+                    </ul>
+                </div>
+                <div class="arch-component">
+                    <h3>Web Dashboard</h3>
+                    <p>Interactive UI for review & feedback</p>
+                    <ul>
+                        <li>Real-time metrics</li>
+                        <li>Feedback collection</li>
+                        <li>Trend analysis</li>
+                    </ul>
+                </div>
+                <div class="arch-component">
+                    <h3>Vector Database</h3>
+                    <p>Qdrant for RAG & semantic search</p>
+                    <ul>
+                        <li>Similarity matching</li>
+                        <li>Context retrieval</li>
+                        <li>Pattern detection</li>
+                    </ul>
+                </div>
+                <div class="arch-component">
+                    <h3>Observability</h3>
+                    <p>Prometheus + Grafana monitoring</p>
+                    <ul>
+                        <li>Performance metrics</li>
+                        <li>Cost tracking</li>
+                        <li>Real dashboards</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Getting Started -->
+    <section id="getting-started" class="getting-started">
+        <div class="container">
+            <h2>Quick Start</h2>
+            <div class="quickstart-content">
+                <div class="quickstart-left">
+                    <h3>Installation</h3>
+                    <pre><code class="language-bash"># Clone repository
+git clone https://github.com/yaegar/tech-debt-collector
+cd tech-debt-collector
+
+# Build binary
+go build -o bin/tech-debt-collector ./cmd/tech-debt-collector</code></pre>
+
+                    <h3>Basic Usage</h3>
+                    <pre><code class="language-bash"># Analyze current directory
+./tech-debt-collector -path .
+
+# Enable LLM analysis (requires OpenAI key)
+export OPENAI_API_KEY="sk-..."
+./tech-debt-collector -path . -llm
+
+# View report
+cat report.json | jq .</code></pre>
+                </div>
+                <div class="quickstart-right">
+                    <h3>Requirements</h3>
+                    <ul class="requirements-list">
+                        <li>✓ Go 1.21+</li>
+                        <li>✓ OpenAI API key (optional, for LLM features)</li>
+                        <li>✓ Docker (optional, for full stack)</li>
+                    </ul>
+
+                    <h3>Docker Compose (Full Stack)</h3>
+                    <pre><code class="language-bash"># Start entire stack
+docker-compose up -d
+
+# Access services:
+# Dashboard: http://localhost:8080
+# Prometheus: http://localhost:9090
+# Grafana: http://localhost:3000</code></pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Use Cases -->
+    <section class="use-cases">
+        <div class="container">
+            <h2>Use Cases</h2>
+            <div class="use-cases-grid">
+                <div class="use-case">
+                    <h3>🏢 Enterprise</h3>
+                    <p>Track technical debt across large codebases, prioritize fixes, improve code quality metrics</p>
+                </div>
+                <div class="use-case">
+                    <h3>👥 Teams</h3>
+                    <p>Establish consistent code standards, identify systemic issues, guide code reviews</p>
+                </div>
+                <div class="use-case">
+                    <h3>🔄 CI/CD</h3>
+                    <p>Integrate into pipelines, fail on critical debt, track metrics over time</p>
+                </div>
+                <div class="use-case">
+                    <h3>🎓 Education</h3>
+                    <p>Teach code quality concepts, analyze open-source projects, learn best practices</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technology Stack -->
+    <section class="tech-stack">
+        <div class="container">
+            <h2>Built With</h2>
+            <div class="tech-grid">
+                <div class="tech-item">
+                    <h4>Backend</h4>
+                    <p>Go 1.21+</p>
+                </div>
+                <div class="tech-item">
+                    <h4>AI/ML</h4>
+                    <p>OpenAI GPT-4/3.5</p>
+                </div>
+                <div class="tech-item">
+                    <h4>Vector DB</h4>
+                    <p>Qdrant</p>
+                </div>
+                <div class="tech-item">
+                    <h4>Monitoring</h4>
+                    <p>Prometheus + Grafana</p>
+                </div>
+                <div class="tech-item">
+                    <h4>Container</h4>
+                    <p>Docker</p>
+                </div>
+                <div class="tech-item">
+                    <h4>Web</h4>
+                    <p>Go net/http</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <h2>Ready to Eliminate Technical Debt?</h2>
+            <p>Start analyzing your codebase today</p>
+            <div class="cta-buttons">
+                <a href="https://github.com/yaegar/tech-debt-collector" class="btn btn-primary btn-large">Get Started on GitHub</a>
+                <a href="https://github.com/yaegar/tech-debt-collector/issues" class="btn btn-secondary btn-large">Report Issues</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Tech Debt Collector</h4>
+                    <p>AI-powered technical debt detection and prioritization</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="https://github.com/yaegar/tech-debt-collector">GitHub</a></li>
+                        <li><a href="https://github.com/yaegar/tech-debt-collector/blob/main/README.md">Documentation</a></li>
+                        <li><a href="https://github.com/yaegar/tech-debt-collector/issues">Issues</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Features</h4>
+                    <ul>
+                        <li><a href="#features">Smart Scanning</a></li>
+                        <li><a href="#features">LLM Analysis</a></li>
+                        <li><a href="#features">Learning Loop</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Tech Debt Collector. Built with ❤️ in Go</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
